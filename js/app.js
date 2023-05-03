@@ -21,7 +21,10 @@ const showMovieDetails = async () => {
 
     // Anropar min metod fetchData() och skickar in korrekt endpoint
     const movie = await fetchData(`movie/${movieId}`);
-    displayMovieDetails("#movie-details", movie); 
+    // Anropar min metod displayMovieDetails() och skickar in korrekt data
+    displayMovieDetails("#movie-details", movie);
+    // showMovieDetails blir ansvarig att anropa min metod displayBackgroundImage()
+    displayBackgroundImage("#movie-details", movie.backdrop_path);
 };
 
 // Skapar en separat funktion för att visa alla filmer
@@ -48,16 +51,8 @@ const displayMovies = (element, movies) => {
     });
 };
 
-// Skapar en separat funktion för att visa detaljer om respektive film 
+// Skapar en separat funktion för att visa detaljer om respektive film
 const displayMovieDetails = (element, movie) => {
-    // Skapar en något transparent bakgrundsbild
-    const overlayDiv = document.createElement("div");
-    overlayDiv.classList.add("background-image");
-
-    document.querySelector("#movie-details").appendChild(overlayDiv);
-
-    overlayDiv.style.backgroundImage = `url(https://image.tmdb.org/t/p/original${movie.backdrop_path})`;
-
     // Skapar utseendet på sidan
     const section = document.createElement("section");
     section.innerHTML = `
@@ -88,8 +83,21 @@ const displayMovieDetails = (element, movie) => {
 
     //Placerar dynamiskt innehåll på sidan under id 'movie-details'
     document.querySelector(element).appendChild(section);
+};
 
-}
+// Skapar en separat funktion för att hämta bild och placera i bakgrunden
+const displayBackgroundImage = (element, backgroundPath) => {
+    // Skapar en något transparent bakgrundsbild
+    const overlayDiv = document.createElement("div");
+    overlayDiv.classList.add("background-image");
+
+    document.querySelector("#movie-details").appendChild(overlayDiv);
+
+    overlayDiv.style.backgroundImage = `url(https://image.tmdb.org/t/p/original${backgroundPath})`;
+
+    //Placerar dynamiskt innehåll på sidan under id 'movie-details'
+    document.querySelector(element).appendChild(overlayDiv);
+};
 
 // Skapar en separat funktion för att hämta datat från API
 const fetchData = async (endpoint) => {
