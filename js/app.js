@@ -21,8 +21,36 @@ const showMovieDetails = async () => {
 
     // Anropar min metod fetchData() och skickar in korrekt endpoint
     const movie = await fetchData(`movie/${movieId}`);
+    displayMovieDetails("#movie-details", movie); 
+};
 
-    //Skapar en något transparent bakgrundsbild
+// Skapar en separat funktion för att visa alla filmer
+const displayMovies = (element, movies) => {
+    //Skapar utseendet på startsidan
+    movies.forEach((movie) => {
+        const section = document.createElement("section");
+        section.classList.add("card");
+
+        section.innerHTML = `
+            <a href="/movie-details.html?id=${movie.id}">
+                <img src="https://image.tmdb.org/t/p/w500${movie.poster_path}" alt="${movie.title}"/>
+            </a>
+            <div class="card-body">
+                <h5 class="card-title">${movie.title}</h5>
+                <p class="card-text">
+                    <small class="text-muted">Premiär datum: ${movie.release_date}</small>
+                </p>
+            </div>
+            `;
+
+        //Placerar dynamiskt innehåll på sidan under id 'top-movies'
+        document.querySelector(element).appendChild(section);
+    });
+};
+
+// Skapar en separat funktion för att visa detaljer om respektive film 
+const displayMovieDetails = (element, movie) => {
+    // Skapar en något transparent bakgrundsbild
     const overlayDiv = document.createElement("div");
     overlayDiv.classList.add("background-image");
 
@@ -59,32 +87,9 @@ const showMovieDetails = async () => {
     `;
 
     //Placerar dynamiskt innehåll på sidan under id 'movie-details'
-    document.querySelector("#movie-details").appendChild(section);
-};
+    document.querySelector(element).appendChild(section);
 
-// Skapar en separat funktion för att visa alla filmer
-const displayMovies = (element, movies) => {
-    //Skapar utseendet på startsidan
-    movies.forEach((movie) => {
-        const section = document.createElement("section");
-        section.classList.add("card");
-
-        section.innerHTML = `
-            <a href="/movie-details.html?id=${movie.id}">
-                <img src="https://image.tmdb.org/t/p/w500${movie.poster_path}" alt="${movie.title}"/>
-            </a>
-            <div class="card-body">
-                <h5 class="card-title">${movie.title}</h5>
-                <p class="card-text">
-                    <small class="text-muted">Premiär datum: ${movie.release_date}</small>
-                </p>
-            </div>
-            `;
-
-        //Placerar dynamiskt innehåll på sidan under id 'top-movies'
-        document.querySelector(element).appendChild(section);
-    });
-};
+}
 
 // Skapar en separat funktion för att hämta datat från API
 const fetchData = async (endpoint) => {
