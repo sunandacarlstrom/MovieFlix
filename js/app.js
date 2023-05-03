@@ -1,16 +1,15 @@
 // Skapar egen state-hantering
 const state = {
     currentPage: window.location.pathname,
+    apiSettings: {
+        key: "cf4dff71f2576af5f9aeb62372d8bb09",
+        baseUrl: "https://api.themoviedb.org/3/",
+    },
 };
 
 const listPopularMovies = async () => {
-    const url = "https://api.themoviedb.org/3/movie/popular";
-    const api_key = "cf4dff71f2576af5f9aeb62372d8bb09";
-
-    // Hämtar datat från API
-    const response = await fetch(`${url}?api_key=${api_key}&language=sv-SE`);
-    const { results } = await response.json();
-    // console.log(results);
+    // Anropar min metod fetchData() och skickar in korrekt endpoint
+    const { results } = await fetchData("movie/popular");
 
     //Skapar utseendet på startsidan
     results.forEach((movie) => {
@@ -36,17 +35,12 @@ const listPopularMovies = async () => {
 
 //Skapar undersidan 'movie-details'
 const showMovieDetails = async () => {
-    const url = "https://api.themoviedb.org/3/movie";
-    const api_key = "cf4dff71f2576af5f9aeb62372d8bb09";
-
     // Måste ha tag i Movie-id med. location.serach som tar frågesträngen
     // därefter splitta frågesträngen och använder endast andra delen av splittningen
     const movieId = window.location.search.split("=")[1];
 
-    // Hämtar datat från API
-    const response = await fetch(`${url}/${movieId}?api_key=${api_key}&language=sv-SE`);
-    const movie = await response.json();
-    // console.log(movie);
+    // Anropar min metod fetchData() och skickar in korrekt endpoint
+    const movie = await fetchData(`movie/${movieId}`);
 
     //Skapar en något transparent bakgrundsbild
     const overlayDiv = document.createElement("div");
@@ -86,6 +80,17 @@ const showMovieDetails = async () => {
 
     //Placerar dynamiskt innehåll på sidan under id 'movie-details'
     document.querySelector("#movie-details").appendChild(section);
+};
+
+// Skapar en separat funktion för att hämta datat från API
+const fetchData = async (endpoint) => {
+    const API_KEY = state.apiSettings.key;
+    const API_URL = state.apiSettings.baseUrl;
+
+    const response = await fetch(`${API_URL}${endpoint}?api_key=${API_KEY}&language=sv-SE`);
+
+    const data = await response.json();
+    return data;
 };
 
 // Skapar routing hantering
