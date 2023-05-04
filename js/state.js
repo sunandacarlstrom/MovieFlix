@@ -1,4 +1,6 @@
-// Skapar egen state-hantering
+// Hanterar och uppdaterar tillståndet(state) för applikationen
+
+// Skapar egen state-hantering för att hålla viktiga globala variabler och inställningar som används på flera ställen i applikationen
 const state = {
     currentPage: window.location.pathname,
     apiSettings: {
@@ -6,3 +8,5 @@ const state = {
         baseUrl: "https://api.themoviedb.org/3/",
     },
 };
+
+export default state;

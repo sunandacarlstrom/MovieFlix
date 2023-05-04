@@ -1,3 +1,5 @@
+// Hanterar visningen av presentationen med olika element
+
 // Skapar en separat funktion för att visa alla filmer
 const displayMovies = (element, movies) => {
     //Skapar utseendet på startsidan
@@ -69,3 +71,6 @@ const displayBackgroundImage = (element, backgroundPath) => {
     //Placerar dynamiskt innehåll på sidan under id 'movie-details'
     document.querySelector(element).appendChild(overlayDiv);
 };
+
+// Namngiven export eftersom det finns flera funktioner i denna fil
+export { displayMovies, displayMovieDetails, displayBackgroundImage };

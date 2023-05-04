@@ -1,5 +1,10 @@
+// Hanterar routing (just nu endast startar upp)
+
+import state from "./state.js";
+import { listPopularMovies, showMovieDetails } from "./movies.js";
+
 // Skapar routing hantering
-const init = () => {
+const route = () => {
     switch (state.currentPage) {
         // fångar upp resultat med olika fall i mitt switch-uttryck
         case "/":
@@ -12,5 +17,4 @@ const init = () => {
     }
 };
 
-// Skapar händelse-hantering när DOM är laddad
-document.addEventListener("DOMContentLoaded", init);
+export default route;

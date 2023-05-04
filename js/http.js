@@ -1,3 +1,7 @@
+// Hanterar kopplingen till film-api
+
+import state from "./state.js";
+
 // Skapar en separat funktion för att hämta datat från API
 const fetchData = async (endpoint) => {
     const API_KEY = state.apiSettings.key;
@@ -8,3 +12,5 @@ const fetchData = async (endpoint) => {
     const data = await response.json();
     return data;
 };
+
+export default fetchData;
