@@ -7,22 +7,49 @@ const displayMovies = (element, movies) => {
         const section = document.createElement("section");
         section.classList.add("card");
 
-        section.innerHTML = `
-            <a href="/movie-details.html?id=${movie.id}">
-                <img src="https://image.tmdb.org/t/p/w500${movie.poster_path}" alt="${movie.title}"/>
-            </a>
-            <div class="card-body">
-                <h5 class="card-title">${movie.title}</h5>
-                <p class="card-text">
-                    <small class="text-muted">Premiär datum: ${movie.release_date}</small>
-                </p>
-            </div>
-            `;
-
         //Placerar dynamiskt innehåll på sidan under id 'top-movies'
+        section.appendChild(displayCardImage(movie));
+        section.appendChild(displayCardBody(movie));
+
         document.querySelector(element).appendChild(section);
     });
 };
+
+const displayCardImage = (movie) => {
+    const link = document.createElement("a");
+    link.href = `/movie-details.html?id=${movie.id}`;
+
+    const img = document.createElement("img");
+    img.src = `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
+    img.alt = movie.title;
+
+    link.appendChild(img);
+    return link
+}
+
+const displayCardBody = (movie) => {
+    const cardBody = document.createElement("div");
+    cardBody.classList.add("card-body");
+
+    const cardTitle = document.createElement("h5");
+    cardTitle.classList.add("card-title");
+    cardBody.appendChild(cardTitle);
+
+    const cardTitleText = document.createTextNode(movie.title);
+    cardTitle.appendChild(cardTitleText);
+    
+    const cardText = document.createElement("p");
+    cardText.classList.add("card-text");
+    cardBody.appendChild(cardText);
+
+    const small = document.createElement("small");
+    small.classList.add("text-muted");
+    const smallText = document.createTextNode(`Premiär datum: ${movie.release_date}`);
+    small.appendChild(smallText);
+    cardText.appendChild(small);
+
+    return cardBody;
+}
 
 // Skapar en separat funktion för att visa detaljer om respektive film
 const displayMovieDetails = (element, movie) => {
