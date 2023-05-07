@@ -24,8 +24,8 @@ const displayCardImage = (movie) => {
     img.alt = movie.title;
 
     link.appendChild(img);
-    return link
-}
+    return link;
+};
 
 const displayCardBody = (movie) => {
     const cardBody = document.createElement("div");
@@ -37,7 +37,7 @@ const displayCardBody = (movie) => {
 
     const cardTitleText = document.createTextNode(movie.title);
     cardTitle.appendChild(cardTitleText);
-    
+
     const cardText = document.createElement("p");
     cardText.classList.add("card-text");
     cardBody.appendChild(cardText);
@@ -49,40 +49,68 @@ const displayCardBody = (movie) => {
     cardText.appendChild(small);
 
     return cardBody;
-}
+};
 
 // Skapar en separat funktion för att visa detaljer om respektive film
 const displayMovieDetails = (element, movie) => {
     // Skapar utseendet på sidan
-    const section = document.createElement("section");
-    section.innerHTML = `
-    <section class="details-top">
-        <div>${
-            movie.poster_path
-                ? `<img src="https://image.tmdb.org/t/p/w500${movie.poster_path}"
-                    class="card-img-top" alt"${movie.title}" />`
-                : `<img src="../assets/images/no-image.jpg"
-                    class="card-img-top" alt="${movie.title}" />`
-        }
-        </div>
-        <section>
-            <h2>${movie.title}</h2>
-            <p>
-            <i class="fas fa-star rating"></i>
-            ${movie.vote_average.toFixed(1)} / 10
-            </p>
-            <p class="text-muted">Premiär ${movie.release_date}</p>
-            <p>${movie.overview}</p>
-            <h5>Genre</h5>
-            <ul>
-            ${movie.genres.map((genre) => `<li>${genre.name}</li>`).join("")}
-            </ul>
-        </section>
-    </section>
-    `;
+    const top = document.createElement("section");
+    top.classList.add("details-top");
+
+    const bottom = document.createElement("section");
+    bottom.classList.add("details-bottom");
+
+    const img = document.createElement("img");
+    img.classList.add("card-img-top");
+    img.src = movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : `../assets/images/No-Image.jpg`;
+    img.alt = movie.title;
+    top.appendChild(img);
+
+    const title = document.createElement("h2");
+    const titleText = document.createTextNode(`${movie.title}`);
+    title.appendChild(titleText);
+    bottom.appendChild(title);
+
+    const rating = document.createElement("p");
+    const ratingIcon = document.createElement("i");
+    ratingIcon.classList.add("fas");
+    ratingIcon.classList.add("fa-star");
+    ratingIcon.classList.add("rating");
+    const ratingText = document.createTextNode(` ${movie.vote_average.toFixed(1)} / 10`);
+    rating.appendChild(ratingIcon);
+    rating.appendChild(ratingText);
+    bottom.appendChild(rating);
+
+    const release = document.createElement("p");
+    release.classList.add("text-muted");
+    const releaseText = document.createTextNode(`Premiär ${movie.release_date}`);
+    release.appendChild(releaseText);
+    bottom.appendChild(release);
+
+    const description = document.createElement("p");
+    const descriptionText = document.createTextNode(`${movie.overview}`);
+    description.appendChild(descriptionText);
+    bottom.appendChild(description);
+
+    const genre = document.createElement("h5");
+    const genreText = document.createTextNode("Genre");
+    genre.appendChild(genreText);
+    bottom.appendChild(genre);
+
+    const ul = document.createElement("ul");
+    movie.genres.forEach(function (genre) {
+        const li = document.createElement("li");
+        const liText = document.createTextNode(`${genre.name}`);
+        li.appendChild(liText);
+        ul.appendChild(li);
+    });
+
+    bottom.appendChild(ul);
 
     //Placerar dynamiskt innehåll på sidan under id 'movie-details'
-    document.querySelector(element).appendChild(section);
+    const section = document.querySelector(element);
+    section.appendChild(top);
+    section.appendChild(bottom);
 };
 
 // Skapar en separat funktion för att hämta bild och placera i bakgrunden
