@@ -1,3 +1,5 @@
+import { createHTMLElement, createHTMLElementImage } from "./element-helper.js";
+
 // Hanterar visningen av presentationen med olika element
 
 // Skapar en separat funktion för att visa alla filmer
@@ -28,25 +30,16 @@ const displayCardImage = (movie) => {
 };
 
 const displayCardBody = (movie) => {
-    const cardBody = document.createElement("div");
-    cardBody.classList.add("card-body");
+    const cardBody = createHTMLElement("div", "card-body");
 
-    const cardTitle = document.createElement("h5");
-    cardTitle.classList.add("card-title");
-    cardBody.appendChild(cardTitle);
+    const title = createHTMLElement("h5", "card-title", movie.title);
+    cardBody.appendChild(title);
 
-    const cardTitleText = document.createTextNode(movie.title);
-    cardTitle.appendChild(cardTitleText);
+    const cardDetails = createHTMLElement("p", "card-text");
+    cardBody.appendChild(cardDetails);
 
-    const cardText = document.createElement("p");
-    cardText.classList.add("card-text");
-    cardBody.appendChild(cardText);
-
-    const small = document.createElement("small");
-    small.classList.add("text-muted");
-    const smallText = document.createTextNode(`Premiär datum: ${movie.release_date}`);
-    small.appendChild(smallText);
-    cardText.appendChild(small);
+    const small = createHTMLElement("small", "text-muted", `Premiär datum: ${movie.release_date}`);
+    cardDetails.appendChild(small);
 
     return cardBody;
 };
@@ -54,54 +47,36 @@ const displayCardBody = (movie) => {
 // Skapar en separat funktion för att visa detaljer om respektive film
 const displayMovieDetails = (element, movie) => {
     // Skapar utseendet på sidan
-    const top = document.createElement("section");
-    top.classList.add("details-top");
+    const top = createHTMLElement("section", "details-top");
 
-    const bottom = document.createElement("section");
-    bottom.classList.add("details-bottom");
+    const bottom = createHTMLElement("section", "details-bottom");
 
-    const img = document.createElement("img");
-    img.classList.add("card-img-top");
-    img.src = movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : `../assets/images/No-Image.jpg`;
-    img.alt = movie.title;
+    const img = createHTMLElementImage("card-img-top", movie.poster_path, movie.title);
     top.appendChild(img);
 
-    const title = document.createElement("h2");
-    const titleText = document.createTextNode(`${movie.title}`);
-    title.appendChild(titleText);
+    const title = createHTMLElement("h2", "", movie.title);
     bottom.appendChild(title);
 
-    const rating = document.createElement("p");
-    const ratingIcon = document.createElement("i");
-    ratingIcon.classList.add("fas");
-    ratingIcon.classList.add("fa-star");
-    ratingIcon.classList.add("rating");
-    const ratingText = document.createTextNode(` ${movie.vote_average.toFixed(1)} / 10`);
+    const ratingText = createHTMLElement("p", "", ` ${movie.vote_average.toFixed(1)} / 10`);
+    const ratingIcon = createHTMLElement("i", "fas fa-star rating");
+    const rating = createHTMLElement("div", "rating-container");
+
     rating.appendChild(ratingIcon);
     rating.appendChild(ratingText);
     bottom.appendChild(rating);
 
-    const release = document.createElement("p");
-    release.classList.add("text-muted");
-    const releaseText = document.createTextNode(`Premiär ${movie.release_date}`);
-    release.appendChild(releaseText);
+    const release = createHTMLElement("p", "text-muted", `Premiär ${movie.release_date}`);
     bottom.appendChild(release);
 
-    const description = document.createElement("p");
-    const descriptionText = document.createTextNode(`${movie.overview}`);
-    description.appendChild(descriptionText);
+    const description = createHTMLElement("p", "", `${movie.overview}`);
     bottom.appendChild(description);
 
-    const genre = document.createElement("h5");
-    const genreText = document.createTextNode("Genre");
-    genre.appendChild(genreText);
+    const genre = createHTMLElement("h5", "", "Genre");
     bottom.appendChild(genre);
 
-    const ul = document.createElement("ul");
+    const ul = createHTMLElement("ul");
     movie.genres.forEach(function (genre) {
-        const li = document.createElement("li");
-        const liText = document.createTextNode(`${genre.name}`);
-        li.appendChild(liText);
+        const li = createHTMLElement("li", "", `${genre.name}`);
         ul.appendChild(li);
     });
 

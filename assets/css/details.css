@@ -33,6 +33,11 @@
 .rating {
     color: var(--secondary-color);
 }
+.rating-container{
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
 
 @media (min-width: 768px) {
     #movie-details {
